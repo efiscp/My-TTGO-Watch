@@ -32,6 +32,7 @@
 #include "gui/lv_fs/lv_fs_spiffs.h"
 #include "mainbar/mainbar.h"
 #include "mainbar/main_tile/main_tile.h"
+#include "mainbar/casio676_tile/casio676_tile.h"
 #include "mainbar/app_tile/app_tile.h"
 #include "mainbar/note_tile/note_tile.h"
 #include "mainbar/setup_tile/setup_tile.h"
@@ -155,6 +156,9 @@ void gui_setup( void ) {
     note_tile_setup();
     log_i("setup tile setup");
     setup_tile_setup();
+    log_i("casio676 tile setup");
+    casio676_tile_setup();
+
     /*
      * add input and status
      */
