@@ -12,16 +12,10 @@
 #include "gui/widget_styles.h"
 #include "app/casio676/casio676.hpp"
 
-extern lv_font_t dotmatrix_16px;
-extern lv_font_t dotmatrix_24px;
-extern lv_font_t dotmatrix_32px;
 
-extern lv_font_t sevenSegment_12px;
-extern lv_font_t sevenSegment_16px;
+extern lv_font_t dotmatrix_24px;
 extern lv_font_t sevenSegment_24px;
-extern lv_font_t sevenSegment_32px;
 extern lv_font_t sevenSegment_48px;
-extern lv_font_t sevenSegment_72px;
 
 static bool casio676tile_init = false;
 static uint32_t casio676tile_num;
