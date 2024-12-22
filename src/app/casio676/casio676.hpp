@@ -5,6 +5,7 @@
 #include <ctime>
 #include <sstream>
 #include <iomanip>
+#include <chrono>
 
 enum CasioEvent_t {
 	BUTTON_B_PRESSED,		//top left button
@@ -61,7 +62,17 @@ public:
 
 	virtual ~CasioApp(void){}
 protected:
+
+	int64_t getElapsedMs(void) const{
+		auto now = std::chrono::steady_clock::now();
+		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - constTime);
+
+		return elapsed.count();
+	}
+
 	CasioStateMachine* sm;
+
+	const std::chrono::time_point<std::chrono::steady_clock> constTime = std::chrono::steady_clock::now();
 
 	static constexpr char DAYS[7][4] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
 };
@@ -121,7 +132,13 @@ public:
 	}
 
 	void processEvent(CasioEvent_t event){
-		sm->changeApp(new WatchApp(sm));
+		switch(event){
+		case BUTTON_C_PRESSED:
+			sm->changeApp(new WatchApp(sm));
+			break;
+		default:
+			break;
+		}
 	}
 };
 
@@ -134,7 +151,13 @@ public:
 	}
 
 	void processEvent(CasioEvent_t event){
-		sm->changeApp(new StwApp(sm));
+		switch(event){
+		case BUTTON_C_PRESSED:
+			sm->changeApp(new StwApp(sm));
+			break;
+		default:
+			break;
+		}
 	}
 };
 
@@ -147,7 +170,13 @@ public:
 	}
 
 	void processEvent(CasioEvent_t event){
-		sm->changeApp(new TimerApp(sm));
+		switch(event){
+		case BUTTON_C_PRESSED:
+			sm->changeApp(new TimerApp(sm));
+			break;
+		default:
+			break;
+		}
 	}
 };
 
@@ -160,7 +189,13 @@ public:
 	}
 
 	void processEvent(CasioEvent_t event){
-		sm->changeApp(new AlarmApp(sm));
+		switch(event){
+		case BUTTON_C_PRESSED:
+			sm->changeApp(new AlarmApp(sm));
+			break;
+		default:
+			break;
+		}
 	}
 };
 
@@ -173,7 +208,13 @@ public:
 	}
 
 	void processEvent(CasioEvent_t event){
-		sm->changeApp(new WtApp(sm));
+		switch(event){
+		case BUTTON_C_PRESSED:
+			sm->changeApp(new WtApp(sm));
+			break;
+		default:
+			break;
+		}
 	}
 };
 
@@ -186,7 +227,13 @@ public:
 	}
 
 	void processEvent(CasioEvent_t event){
-		sm->changeApp(new CalApp(sm));
+		switch(event){
+		case BUTTON_C_PRESSED:
+			sm->changeApp(new CalApp(sm));
+			break;
+		default:
+			break;
+		}
 	}
 };
 
@@ -199,12 +246,36 @@ public:
 	}
 
 	void processEvent(CasioEvent_t event){
-		sm->changeApp(new SchedApp(sm));
+		switch(event){
+		case BUTTON_C_PRESSED:
+			sm->changeApp(new SchedApp(sm));
+			break;
+		default:
+			break;
+		}
 	}
+
+	void periodic(void){
+		if(initialText){
+			if(getElapsedMs() > 500){
+				initialText = false;
+				sm->getDisplayManager().setDotMatrixText("");
+			}
+		}
+	}
+
+private:
+	bool initialText = true;
 };
 
 void WatchApp::processEvent(CasioEvent_t event){
-	sm->changeApp(new TelApp(sm));
+	switch(event){
+	case BUTTON_C_PRESSED:
+		sm->changeApp(new TelApp(sm));
+		break;
+	default:
+		break;
+	}
 }
 
 class Casio676:public CasioStateMachine{
