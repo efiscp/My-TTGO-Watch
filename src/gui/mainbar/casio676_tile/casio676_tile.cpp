@@ -88,14 +88,14 @@ void casio676_tile_setup(void){
 	//gui setup
 	displaySetup();
 	buttonStyleSetup();
-	buttonSetup(buttonA, 0, 30, &buttonStyle, buttonA_event_cb);
+	buttonSetup(buttonB, 0, 30, &buttonStyle, buttonB_event_cb);
 	buttonSetup(buttonC, 0, 70, &buttonStyle, buttonC_event_cb);
 	buttonSetup(buttonL, 120, 30, &buttonStyle, buttonL_event_cb);
-	buttonSetup(buttonB, 120, 70, &buttonStyle, buttonB_event_cb);
+	buttonSetup(buttonA, 120, 70, &buttonStyle, buttonA_event_cb);
 
     //Casio676 core setup
     casio = new Casio676(dotMatrixLabel, smallDigitLabel, largeDigitLabel);
-    casio676Task = lv_task_create(casio676task, 500u, LV_TASK_PRIO_MID, NULL);
+    casio676Task = lv_task_create(casio676task, 100u, LV_TASK_PRIO_MID, NULL);
 
 	casio676tile_init = true;
 }
