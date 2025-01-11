@@ -70,8 +70,4 @@ protected:
 	static constexpr char DAYS[7][4] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
 };
 
-constexpr char CasioApp::DAYS[7][4];
-
-
-
 #endif /* SRC_APP_CASIO676_CASIOAPPS_CASIOAPP_HPP_ */
