@@ -38,14 +38,22 @@ public:
 	SplState(StwStateMachine* sm):StwState(sm){}
 
 	void activate(void){
-		sm->printSpl();
-		sm->printSplitTime();
+		cancelSpl();
 	}
 
 	void processEvent(CasioEvent_t event);
 
 	void periodic(void){
 		//nothing to do here
+	}
+
+private:
+	void cancelSpl(void){
+		//deactivate split mode & resume run mode
+		sm->printStw();
+		sm->printCurrentTime();
+
+		sm->changeState(new RunState(sm));
 	}
 };
 
@@ -97,11 +105,7 @@ void RunState::processEvent(CasioEvent_t event){
 void SplState::processEvent(CasioEvent_t event){
 	switch(event){
 	case BUTTON_L_PRESSED:
-		//deactivate split mode & resume run mode
-		sm->printStw();
-		sm->printCurrentTime();
-
-		sm->changeState(new RunState(sm));
+		cancelSpl();
 		break;
 	case BUTTON_A_PRESSED:
 		//accumulate and switch to stop state & print elapsed time
