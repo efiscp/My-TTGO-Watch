@@ -15,6 +15,14 @@ public:
 
 	void processEvent(CasioEvent_t event){
 		switch(event){
+		case BUTTON_B_PRESSED:
+			sm->getDisplayManager().setLargeDigitText(" 00:00");
+			sm->getDisplayManager().blinkLargeDigitText('_', 1, 2);
+			sm->getDisplayManager().startLargeDigitBlinking();
+			break;
+		case BUTTON_L_PRESSED:
+			sm->getDisplayManager().blink();
+			break;
 		case BUTTON_C_PRESSED:
 			sm->changeApp(false);
 			break;

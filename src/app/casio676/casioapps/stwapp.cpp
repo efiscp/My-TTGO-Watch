@@ -23,6 +23,7 @@ public:
 	void activate(void){
 		sm->printStw();
 		sm->printCurrentTime();
+		sm->startBlinking();
 	}
 
 	void processEvent(CasioEvent_t event);
@@ -72,6 +73,7 @@ void StopState::processEvent(CasioEvent_t event){
 		sm->storeRefTime();
 
 		//enter run state
+		sm->startBlinking();
 		sm->changeState(new RunState(sm));
 		break;
 	default:
@@ -87,6 +89,7 @@ void RunState::processEvent(CasioEvent_t event){
 		sm->printSpl();
 		sm->printSplitTime();
 
+		sm->stopBlinking();
 		sm->changeState(new SplState(sm));
 		break;
 	case BUTTON_A_PRESSED:
@@ -95,6 +98,7 @@ void RunState::processEvent(CasioEvent_t event){
 		sm->printAccumulatedTime();
 
 		//switch to stop state
+		sm->stopBlinking();
 		sm->changeState(new StopState(sm));
 		break;
 	default:
@@ -105,6 +109,7 @@ void RunState::processEvent(CasioEvent_t event){
 void SplState::processEvent(CasioEvent_t event){
 	switch(event){
 	case BUTTON_L_PRESSED:
+		sm->startBlinking();
 		cancelSpl();
 		break;
 	case BUTTON_A_PRESSED:

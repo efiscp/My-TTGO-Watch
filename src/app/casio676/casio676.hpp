@@ -32,6 +32,8 @@ public:
 	void changeApp(bool resetToDefault){
 		(*appItr)->deactivate();
 
+		dm.stopBlinking(false);
+
 		if(resetToDefault || ++appItr == appList.end())
 			appItr = appList.begin();
 
@@ -47,6 +49,18 @@ public:
 	}
 
 	void periodic(void){
+		CasioApp::Timeinfo info;
+		CasioApp::convertDuration(info, std::chrono::steady_clock::now().time_since_epoch());
+
+		if(info.milliseconds >= 500 && !blink){
+			dm.blink();
+			blink = true;
+		}else if(info.milliseconds < 500 && blink){
+			dm.blink();
+			blink = false;
+		}
+
+
 		(*appItr)->periodic();
 	}
 
@@ -56,6 +70,8 @@ private:
 
 	std::list<CasioApp*> appList;
 	std::list<CasioApp*>::iterator appItr;
+
+	bool blink = false;
 };
 
 #endif

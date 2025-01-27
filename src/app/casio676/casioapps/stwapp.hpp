@@ -47,6 +47,8 @@ public:
 	virtual void printCurrentTime(void) const = 0;
 	virtual void printAccumulatedTime(void) const = 0;
 	virtual void printSplitTime(void) const = 0;
+	virtual void startBlinking(void) = 0;
+	virtual void stopBlinking(void) = 0;
 
 	virtual void printStw(void) const = 0;
 	virtual void printSpl(void) const = 0;
@@ -69,6 +71,7 @@ public:
 
 	//delegate activation event to state
 	void activate(void){
+		sm->getDisplayManager().blinkLargeDigitText(' ', 2, 1);
 		state->activate();
 	}
 
@@ -109,6 +112,7 @@ public:
 	//initialize display to initial state
 	void clearDisplay(void) const{
 		//print initial information
+		sm->getDisplayManager().stopBlinking(false);
 		sm->getDisplayManager().setDotMatrixText("ST-W");
 		sm->getDisplayManager().setSmallDigitText("   00");
 		sm->getDisplayManager().setLargeDigitText(" 0:00 00");
@@ -147,6 +151,13 @@ public:
 		sm->getDisplayManager().setDotMatrixText("SPL");
 	}
 
+	void startBlinking(void){
+		sm->getDisplayManager().startLargeDigitBlinking();
+	}
+
+	void stopBlinking(void){
+		sm->getDisplayManager().stopBlinking(true);
+	}
 private:
 
 	//format elapsed time and print
