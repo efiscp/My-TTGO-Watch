@@ -19,21 +19,10 @@ protected:
 };
 
 //abstract state machine class
-class StwStateMachine{
+class StwStateMachine:public GenericStateMachine<StwState>{
 public:
 	StwStateMachine(void);
-
-	virtual ~StwStateMachine(void){
-		delete state;
-		state = 0;
-	}
-
-	virtual void changeState(StwState* s){
-		if(s != NULL){
-			delete state;
-			state = s;
-		}
-	}
+	virtual ~StwStateMachine(void){}
 
 	//time functions
 	virtual void storeRefTime(void) = 0;
@@ -52,9 +41,6 @@ public:
 
 	virtual void printStw(void) const = 0;
 	virtual void printSpl(void) const = 0;
-
-protected:
-	StwState* state;
 };
 
 //ST-W application

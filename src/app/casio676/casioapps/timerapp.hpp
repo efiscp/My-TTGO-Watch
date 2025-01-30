@@ -3,7 +3,32 @@
 
 #include "casioapp.hpp"
 
-class TimerApp:public CasioApp{
+class TimerStateMachine;
+
+class TimerState{
+public:
+	TimerState(TimerStateMachine* sm):sm(sm){}
+
+	virtual ~TimerState(){}
+	virtual void activate(void) = 0;
+	virtual bool processEvent(CasioEvent_t event) = 0;
+	virtual void periodic(void) = 0;
+protected:
+	TimerStateMachine* sm;
+};
+
+class TimerStateMachine:public GenericStateMachine<TimerState>{
+public:
+	TimerStateMachine(void);
+	virtual ~TimerStateMachine(void){}
+
+	virtual void setText(const char* text) = 0;
+	virtual void setBlink(uint8_t p) = 0;
+	virtual void startBlinking(void) = 0;
+	virtual void stopBlinking(void) = 0;
+};
+
+class TimerApp:public CasioApp, public TimerStateMachine{
 public:
 	TimerApp(CasioStateMachine* sm):CasioApp(sm){}
 
@@ -15,20 +40,30 @@ public:
 
 	void processEvent(CasioEvent_t event){
 		switch(event){
-		case BUTTON_B_PRESSED:
-			sm->getDisplayManager().setLargeDigitText(" 00:00");
-			sm->getDisplayManager().blinkLargeDigitText('_', 1, 2);
-			sm->getDisplayManager().startLargeDigitBlinking();
-			break;
-		case BUTTON_L_PRESSED:
-			sm->getDisplayManager().blink();
-			break;
 		case BUTTON_C_PRESSED:
-			sm->changeApp(false);
+			if(false == state->processEvent(event))
+				sm->changeApp(false);
 			break;
 		default:
+			state->processEvent(event);
 			break;
 		}
+	}
+
+	void setText(const char* text){
+		sm->getDisplayManager().setLargeDigitText(text);
+	}
+
+	void setBlink(uint8_t p){
+		sm->getDisplayManager().blinkLargeDigitText('_', p, 1);
+	}
+
+	void startBlinking(void){
+		sm->getDisplayManager().startLargeDigitBlinking();
+	}
+
+	void stopBlinking(void){
+		sm->getDisplayManager().stopBlinking(true);
 	}
 };
 

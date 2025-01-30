@@ -1,5 +1,6 @@
 #include "stwapp.hpp"
 
+namespace StwStateNs{
 class StopState:public StwState{
 public:
 	StopState(StwStateMachine* sm):StwState(sm){}
@@ -57,9 +58,9 @@ private:
 		sm->changeState(new RunState(sm));
 	}
 };
+}
 
-
-void StopState::processEvent(CasioEvent_t event){
+void StwStateNs::StopState::processEvent(CasioEvent_t event){
 	switch(event){
 	case BUTTON_L_PRESSED:
 		//clear accumulator & display
@@ -81,7 +82,7 @@ void StopState::processEvent(CasioEvent_t event){
 	}
 }
 
-void RunState::processEvent(CasioEvent_t event){
+void StwStateNs::RunState::processEvent(CasioEvent_t event){
 	switch(event){
 	case BUTTON_L_PRESSED:
 		//activate split mode
@@ -106,7 +107,7 @@ void RunState::processEvent(CasioEvent_t event){
 	}
 }
 
-void SplState::processEvent(CasioEvent_t event){
+void StwStateNs::SplState::processEvent(CasioEvent_t event){
 	switch(event){
 	case BUTTON_L_PRESSED:
 		sm->startBlinking();
@@ -127,6 +128,4 @@ void SplState::processEvent(CasioEvent_t event){
 }
 
 //set initial state to STOP
-StwStateMachine::StwStateMachine(void){
-	state = new StopState(this);
-}
+StwStateMachine::StwStateMachine(void):GenericStateMachine<StwState>(new StwStateNs::StopState(this)){}

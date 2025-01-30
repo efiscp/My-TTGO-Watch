@@ -74,4 +74,27 @@ int64_t getElapsedMs(void) const{
 	static constexpr char DAYS[7][4] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
 };
 
+template<typename S>
+class GenericStateMachine{
+public:
+	GenericStateMachine(S* s):state(s){}
+
+	virtual ~GenericStateMachine(void){
+		if(state != NULL){
+			delete state;
+			state = NULL;
+		}
+	}
+
+	virtual void changeState(S* s){
+		if(s != NULL){
+			delete state;
+			state = s;
+		}
+	}
+
+protected:
+	S* state = NULL;
+};
+
 #endif /* SRC_APP_CASIO676_CASIOAPPS_CASIOAPP_HPP_ */
