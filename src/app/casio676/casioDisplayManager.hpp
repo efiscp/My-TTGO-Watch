@@ -39,6 +39,11 @@ public:
 		lv_label_set_text(largeDigit, largeDigitWrapper.getCurrent().c_str());
 	}
 
+	void setLargeDigitChar(const char c, uint8_t pos){
+		largeDigitWrapper.setChar(c, pos);
+		lv_label_set_text(largeDigit, largeDigitWrapper.getCurrent().c_str());
+	}
+
 	void blinkLargeDigitText(char c, uint8_t start, uint8_t width){
 		largeDigitWrapper.setBlinkText(c, start, width);
 	}
@@ -101,6 +106,10 @@ private:
 		void setText(const char* str){
 			normalText = std::string(str);
 			updateBlinkText();
+		}
+
+		void setChar(const char c, uint8_t pos){
+			normalText[pos] = c;
 		}
 
 		void setBlinkText(char c, uint8_t start, uint8_t width){

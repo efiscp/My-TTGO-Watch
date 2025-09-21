@@ -27,12 +27,22 @@ public:
 		appList.push_back(new StwApp(this));
 
 		appItr = appList.begin();
+
+		num = new NumericKeypad();
+		alphanum = new AlphanumericKeypad();
+	}
+
+	~Casio676(void){
+		delete num;
+		delete alphanum;
 	}
 
 	void changeApp(bool resetToDefault){
 		(*appItr)->deactivate();
 
 		dm.stopBlinking(false);
+		alphanum->reset();
+		num->reset();
 
 		if(resetToDefault || ++appItr == appList.end())
 			appItr = appList.begin();
@@ -42,6 +52,14 @@ public:
 
 	Casio676_DisplayManager& getDisplayManager(void){
 		return dm;
+	}
+
+	Keypad* getNumericKeypad(void){
+		return num;
+	}
+
+	Keypad* getAlphaNumericKeypad(void){
+		return alphanum;
 	}
 
 	void processEvent(CasioEvent_t event){
@@ -67,6 +85,8 @@ public:
 private:
 
 	Casio676_DisplayManager dm;
+	Keypad* num;
+	Keypad* alphanum;
 
 	std::list<CasioApp*> appList;
 	std::list<CasioApp*>::iterator appItr;
